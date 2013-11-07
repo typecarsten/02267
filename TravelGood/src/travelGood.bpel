@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process
+    name="travelGood"
+    targetNamespace="http://enterprise.netbeans.org/bpel/TravelGood/travelGood"
+    xmlns:tns="http://enterprise.netbeans.org/bpel/TravelGood/travelGood"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
+    xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2"
+    xmlns:sxat="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Attachment"
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling">
+   <import namespace="http://j2ee.netbeans.org/wsdl/AirlineReservation/airline/AirlineConnect" location="AirlineReservation/airline/AirlineConnect.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+   <sequence>
+      <receive name="Receive1" createInstance="yes"/>
+      <assign name="Assign1"/>
+      <reply name="Reply1"/>
+      <pick name="Pick1">
+         <onMessage/>
+         <onMessage/>
+      </pick>
+   </sequence>
+</process>
