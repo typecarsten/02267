@@ -14,12 +14,13 @@ import javax.jws.WebService;
  */
 @WebService(serviceName = "AirlineReservation")
 public class AirlineReservation {
-
+    
+    
     /**
      * Web service operation
      */
     @WebMethod(operationName = "getFlights")
-    public String[] getFlights(@WebParam(name = "flightStart") String flightStart, @WebParam(name = "flightDist") String flightDist, @WebParam(name = "flightDate") String flightDate) {
+    public String[] getFlights(@WebParam(name = "flightStart") String flightStart, @WebParam(name = "flightDest") String flightDest, @WebParam(name = "flightDate") String flightDate) {
         //TODO write your implementation code here:
         return null;
     }
