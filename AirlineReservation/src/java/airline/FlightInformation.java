@@ -10,15 +10,17 @@ import java.util.Date;
  * @author Matias
  */
 public class FlightInformation {
+   
+    private int bookingNo;
+    private double price;
+    private String flightService;
+    private Flight flight;
     
-    public FlightInformation create_flightinfo(int bookingNo, double price, String flightService)
-    {
+    public FlightInformation(int bookingNo, double price, String flightService, Flight flight) {
     
-    String flightStart;
-    String flightDest;
-    Date departure;
-    Date arrival;
-    String carrier;
-        
-        }
-    }   
+        this.bookingNo = bookingNo;
+        this.price = price;
+        this.flightService = flightService;
+        this.flight = flight;
+    }
+}   

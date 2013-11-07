@@ -4,6 +4,7 @@
  */
 package airline;
 
+import java.util.Date;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -14,6 +15,8 @@ import javax.jws.WebService;
  */
 @WebService(serviceName = "AirlineReservation")
 public class AirlineReservation {
+    
+    FlightInformation FI1 = new FlightInformation(00001, 500, "Momondo", new Flight("Copenhagen", "Paris", new Date(113, 1, 1, 10,30) , new Date(113,1,1,12,30), "SAS"));
     
     
     /**
