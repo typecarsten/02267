@@ -4,6 +4,8 @@
  */
 package Hotel;
 
+import java.lang.reflect.Array;
+import java.util.*;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -13,13 +15,17 @@ import javax.jws.WebService;
  */
 @WebService(serviceName = "HotelReservation")
 public class HotelReservation {
-
+    
+        Hotel hotel1 = new Hotel("HenryHotel", "Wallstreet", "New York", true, 200, "FleggaardReservation");
+        Hotel hotel2 = new Hotel("ConnieHotel", "fifth-avenue", "New York", false, 400, "JohnyReservation");
+        Hotel hotel3 =
+        Hotel[] gunner = {hotel1};
     /**
      * Web service operation
      */
     @WebMethod(operationName = "getHotel")
     public String[] getHotel(@WebParam(name = "city") String city, @WebParam(name = "arrivalDate") String arrivalDate, @WebParam(name = "depDate") String depDate) {
-        //TODO write your implementation code here:
+        
         return null;
     }
 
