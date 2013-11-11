@@ -16,8 +16,15 @@ import javax.jws.WebService;
 @WebService(serviceName = "AirlineReservation")
 public class AirlineReservation {
     
-    FlightInformation FI1 = new FlightInformation(00001, 500, "Momondo", new Flight("Copenhagen", "Paris", new Date(113, 1, 1, 10,30) , new Date(113,1,1,12,30), "SAS"));
+    FlightInformation FI2 = new FlightInformation(00001, 500, "Momondo", new Flight("Copenhagen", "Paris", new Date(113, 1, 1, 10, 30) , new Date(113,1,1,12,30), "SAS"));
+    FlightInformation FI3 = new FlightInformation(00002, 650, "Momondo", new Flight("Billund", "Berlin", new Date(113, 2, 4, 8, 10) , new Date(113,2,4,10,30), "Ryan Air"));
+    FlightInformation FI4 = new FlightInformation(00003, 700, "Momondo", new Flight("Aalborg", "New York", new Date(113, 5, 1, 14, 00) , new Date(113,5,1,23,30), "SAS"));
+    FlightInformation FI5 = new FlightInformation(00004, 400, "Momondo", new Flight("Roskilde", "New Delhi", new Date(113, 5, 2, 9, 00) , new Date(113,5,2,17,45), "Ryan Air"));
+    FlightInformation FI6 = new FlightInformation(00005, 450, "Momondo", new Flight("Copenhagen", "Paris", new Date(113, 1, 13, 12, 00) , new Date(113,1,13,15,00), "SAS"));
     
+    FligtInformation[] flightlist = new FlightInformation[5];
+    
+    flightlist[0] = FI2;
     
     /**
      * Web service operation
