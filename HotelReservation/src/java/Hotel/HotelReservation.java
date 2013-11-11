@@ -26,6 +26,7 @@ public class HotelReservation {
         Hotel[] hotelList = {WakeUpCopenhagen, DreamDownTown, CasaHotel, ValbyHotel, BlueSea, MarinaHotel, AmediaHotel};
         String[] endDateArray;
         String[] startDateArray;
+        ArrayList<Hotel> bookedHotels;
         
         
     private int getDaysInMonth(String startDate){
@@ -78,14 +79,35 @@ public class HotelReservation {
         //TODO write your implementation code here:
         return false;
     }
+    
+        /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "bookHotel")
+    public boolean bookHotel(@WebParam(name = "hotelBookingNumber") int hotelBookingNumber) {
+        for (Hotel hotel : hotelList){
+            if(hotelBookingNumber == Integer.parseInt(hotel.getBookingNo())){
+               bookedHotels.add(hotel);
+            }else{
+                //TODO throw exception
+            }
+        }
+        return true;
+    }
 
     /**
      * Web service operation
      */
     @WebMethod(operationName = "cancelHotel")
     public boolean cancelHotel(@WebParam(name = "hotelBookingNumber") int hotelBookingNumber) {
-        //TODO write your implementation code here:
+        for (Hotel hotel : bookedHotels){
+            if(hotelBookingNumber == Integer.parseInt(hotel.getBookingNo())){
+                bookedHotels.remove(hotel);
+                return true;
+            }
+        }
         return false;
+        //TODO throw exception
     }
     
 }
