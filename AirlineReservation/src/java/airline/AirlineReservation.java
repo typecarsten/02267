@@ -31,11 +31,13 @@ public class AirlineReservation {
     @WebMethod(operationName = "getFlights")
     public String[] getFlights(@WebParam(name = "flightStart") String flightStart, @WebParam(name = "flightDest") String flightDest, @WebParam(name = "flightDate") String flightDate) {
         String[] list = new String[5];
+        int j = 0;
         for(int i = 0; i<flightList.length; i++){
             if(flightList[i].getFlight().getFlightStart().equals(flightStart)){
                 if(flightList[i].getFlight().getFlightDest().equals(flightDest)){
-                list[i] = flightList[i].getBookingNo() + " " + flightList[i].getPrice() + " " + flightList[i].getFlightService() + " " + flightList[i].getFlight().getFlightStart() + " " + flightList[i].getFlight().getFlightDest() + " " + flightList[i].getFlight().getDeparture() + " " + flightList[i].getFlight().getArrival();
-        }
+                list[j] = flightList[i].getBookingNo() + " " + flightList[i].getPrice() + " " + flightList[i].getFlightService() + " " + flightList[i].getFlight().getFlightStart() + " " + flightList[i].getFlight().getFlightDest() + " " + flightList[i].getFlight().getDeparture() + " " + flightList[i].getFlight().getArrival();
+                j = j +1;
+                }
             }
         }
         return list;
