@@ -45,13 +45,13 @@ public class HotelReservation {
     
     private int getLengthOfStay(String endDate){
         endDateArray = endDate.split(":");
-        if(endDateArray[1] != startDateArray[1]){
+        if(endDateArray[1].equals(startDateArray[1])){
+            return Integer.parseInt(endDateArray[0]) - Integer.parseInt(startDateArray[0]);
+        }
+        else{
             int daysLeftInMonth = Integer.parseInt(startDateArray[1]) - getDaysInMonth(startDateArray[1]);
             int daysInNextMonth = Integer.parseInt(endDateArray[0]);
             return daysInNextMonth + daysLeftInMonth;
-        }
-        else{
-            return Integer.parseInt(endDateArray[0]) - Integer.parseInt(startDateArray[0]);
         }
     }
         
@@ -63,12 +63,12 @@ public class HotelReservation {
         String[] list = new String[10];
         int price = 0;
         for(int i = 0; i<hotelList.length; i++){
-            if (hotelList[i].getCity() == city){
+            if (hotelList[i].getCity().equals(city)){
                 price = Integer.parseInt(hotelList[i].getPrice()) * getLengthOfStay(arrivalDate);
-                list[0] = "" + hotelList[i].getName() + hotelList[i].getAddress() + hotelList[i].getBookingNo() + price + hotelList[i].getCreditCardGuarantee() + hotelList[i].getReservationService();
+                list[i] = hotelList[i].getName() + hotelList[i].getAddress() + hotelList[i].getBookingNo() + price + hotelList[i].getCreditCardGuarantee() + hotelList[i].getReservationService();
             }
         }
-        return null;
+        return list;
     }
 
     /**
@@ -76,7 +76,7 @@ public class HotelReservation {
      */
     @WebMethod(operationName = "bookHotel")
     public boolean bookHotel(@WebParam(name = "hotelBookingNumber") int hotelBookingNumber, @WebParam(name = "cardHolder") String cardHolder, @WebParam(name = "cardNumber") int cardNumber, @WebParam(name = "cardExpireDate") String cardExpireDate) {
-        //TODO write your implementation code here:
+        //Implement with bank
         return false;
     }
     
@@ -84,12 +84,12 @@ public class HotelReservation {
      * Web service operation
      */
     @WebMethod(operationName = "bookHotel")
-    public boolean bookHotel(@WebParam(name = "hotelBookingNumber") int hotelBookingNumber) {
+    public boolean bookHotel(@WebParam(name = "hotelBookingNumber") int hotelBookingNumber) throws Exception {
         for (Hotel hotel : hotelList){
             if(hotelBookingNumber == Integer.parseInt(hotel.getBookingNo())){
                bookedHotels.add(hotel);
             }else{
-                //TODO throw exception
+                throw new Exception("Invallid booking number");
             }
         }
         return true;
@@ -99,15 +99,14 @@ public class HotelReservation {
      * Web service operation
      */
     @WebMethod(operationName = "cancelHotel")
-    public boolean cancelHotel(@WebParam(name = "hotelBookingNumber") int hotelBookingNumber) {
+    public boolean cancelHotel(@WebParam(name = "hotelBookingNumber") int hotelBookingNumber) throws Exception {
         for (Hotel hotel : bookedHotels){
             if(hotelBookingNumber == Integer.parseInt(hotel.getBookingNo())){
                 bookedHotels.remove(hotel);
                 return true;
             }
         }
-        return false;
-        //TODO throw exception
+        throw new Exception("Invallid booking number");
     }
     
 }
