@@ -56,4 +56,8 @@ public class Hotel {
     public String getBookingNo(){
         return Integer.toString(bookingNo);
     }
+    
+    public String toString(){
+        return name + address + city + creditCardGuarantee + price + reservationService + getBookingNo();
+    }
 }

@@ -4,7 +4,6 @@
  */
 package Hotel;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -24,14 +23,14 @@ public class HotelReservation {
         Hotel MarinaHotel = new Hotel("Marina Hotel", "St. Georges Bay St. Julian's", "malta", false, 1000, "NyhavnTravel" ,6);
         Hotel AmediaHotel = new Hotel("Amedia Hotel", "Kurfüerstendamm 203", "Berlin", true, 500, "Momondo.dk", 7);
         Hotel[] hotelList = {WakeUpCopenhagen, DreamDownTown, CasaHotel, ValbyHotel, BlueSea, MarinaHotel, AmediaHotel};
-        String[] endDateArray;
-        String[] startDateArray;
+        String[] arrivalDateArray;
+        String[] depDateArray;
         ArrayList<Hotel> bookedHotels;
         
         
     private int getDaysInMonth(String startDate){
-        startDateArray = startDate.split(startDate);
-        int month = Integer.parseInt(startDateArray[1]);
+        arrivalDateArray = startDate.split(startDate);
+        int month = Integer.parseInt(arrivalDateArray[1]);
         int days = 0;
         switch (month) {
             case 2 : return 28;
@@ -43,14 +42,15 @@ public class HotelReservation {
         }
     }
     
-    private int getLengthOfStay(String endDate){
-        endDateArray = endDate.split(":");
-        if(endDateArray[1].equals(startDateArray[1])){
-            return Integer.parseInt(endDateArray[0]) - Integer.parseInt(startDateArray[0]);
+    private int getLengthOfStay(String arrivalDate, String depDate ){
+        arrivalDateArray = arrivalDate.split(":");
+        depDateArray = depDate.split(":");
+        if(arrivalDateArray[1].equals(depDateArray[1])){
+            return Integer.parseInt(depDateArray[0]) - Integer.parseInt(arrivalDateArray[0]);
         }
         else{
-            int daysLeftInMonth = Integer.parseInt(startDateArray[1]) - getDaysInMonth(startDateArray[1]);
-            int daysInNextMonth = Integer.parseInt(endDateArray[0]);
+            int daysLeftInMonth = Integer.parseInt(arrivalDateArray[1]) - getDaysInMonth(depDateArray[1]);
+            int daysInNextMonth = Integer.parseInt(depDateArray[0]);
             return daysInNextMonth + daysLeftInMonth;
         }
     }
@@ -62,10 +62,12 @@ public class HotelReservation {
     public String[] getHotel(@WebParam(name = "city") String city, @WebParam(name = "arrivalDate") String arrivalDate, @WebParam(name = "depDate") String depDate) {
         String[] list = new String[10];
         int price = 0;
+        int j = 0;
         for(int i = 0; i<hotelList.length; i++){
-            if (hotelList[i].getCity().equals(city)){
-                price = Integer.parseInt(hotelList[i].getPrice()) * getLengthOfStay(arrivalDate);
-                list[i] = hotelList[i].getName() + hotelList[i].getAddress() + hotelList[i].getBookingNo() + price + hotelList[i].getCreditCardGuarantee() + hotelList[i].getReservationService();
+            if (hotelList[i].getCity().toLowerCase().equals(city.toLowerCase())){
+                price = Integer.parseInt(hotelList[i].getPrice()) * getLengthOfStay(arrivalDate, depDate);
+                list[j] = hotelList[i].getName() + hotelList[i].getAddress() + hotelList[i].getBookingNo() + price + hotelList[i].getCreditCardGuarantee() + hotelList[i].getReservationService();
+                j++;
             }
         }
         return list;
@@ -74,10 +76,10 @@ public class HotelReservation {
     /**
      * Web service operation
      */
-    @WebMethod(operationName = "bookHotel")
-    public boolean bookHotel(@WebParam(name = "hotelBookingNumber") int hotelBookingNumber, @WebParam(name = "cardHolder") String cardHolder, @WebParam(name = "cardNumber") int cardNumber, @WebParam(name = "cardExpireDate") String cardExpireDate) {
-        //Implement with bank
-        return false;
+    @WebMethod(operationName = "bookHotelCreditCard")
+    public boolean bookHotelCreditCard(@WebParam(name = "hotelBookingNumber") int hotelBookingNumber, @WebParam(name = "cardHolder") String cardHolder, @WebParam(name = "cardNumber") int cardNumber, @WebParam(name = "cardExpireDate") String cardExpireDate) {
+       //Implement with bank
+       return false;
     }
     
         /**
