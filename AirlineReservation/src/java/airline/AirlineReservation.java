@@ -15,9 +15,7 @@ import javax.jws.WebService;
  * @author Administrator
  */
 @WebService(serviceName = "AirlineReservation")
-public class AirlineReservation {
-    
-    
+public class AirlineReservation {  
     
     FlightInformation FI1 = new FlightInformation("00001", "500", "Momondo", new Flight("Copenhagen", "Paris", "01;01;10;30" , "01;01;12;30", "SAS"));
     FlightInformation FI2 = new FlightInformation("00002", "650", "Momondo", new Flight("Billund", "Berlin", "02;04;8;10" , "02;04;10;30", "Ryan Air"));
@@ -33,10 +31,14 @@ public class AirlineReservation {
     @WebMethod(operationName = "getFlights")
     public String[] getFlights(@WebParam(name = "flightStart") String flightStart, @WebParam(name = "flightDest") String flightDest, @WebParam(name = "flightDate") String flightDate) {
         String[] list = new String[5];
+        int j = 0;
         for(int i = 0; i<flightList.length; i++){
-            if(flightList[i].getFlight().getFlightStart().equals(flightStart)){ // AND flightList[i].getFlight().getFlightDest().equals(flightDest))){
-                list[i] = flightList[i].getBookingNo() + " " + flightList[i].getPrice() + " " + flightList[i].getFlightService() + " " + flightList[i].getFlight().getFlightStart() + " " + flightList[i].getFlight().getFlightDest() + " " + flightList[i].getFlight().getDeparture() + " " + flightList[i].getFlight().getArrival();
-        }
+            if(flightList[i].getFlight().getFlightStart().equals(flightStart)){
+                if(flightList[i].getFlight().getFlightDest().equals(flightDest)){
+                list[j] = flightList[i].getBookingNo() + " " + flightList[i].getPrice() + " " + flightList[i].getFlightService() + " " + flightList[i].getFlight().getFlightStart() + " " + flightList[i].getFlight().getFlightDest() + " " + flightList[i].getFlight().getDeparture() + " " + flightList[i].getFlight().getArrival();
+                j = j +1;
+                }
+            }
         }
         return list;
     }

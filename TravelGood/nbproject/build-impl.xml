@@ -56,7 +56,9 @@
         <!-- Empty placeholder for easier customization. -->
         <!-- You can override this target in the ../build.xml file. -->
     </target>
-    <target name="deps-jar-dist" depends="init" unless="${no.dependencies}"/>
+    <target name="deps-jar-dist" depends="init" unless="${no.dependencies}">
+        <ant target="jar" inheritall="false" antfile="${project.TravelGoodClient}/build.xml"/>
+    </target>
     <target name="do-dist" depends="init,pre-dist">
         <mkdir dir="${build.dir}"/>
         <validate-project buildDirectory="${basedir}/${build.dir}" sourceDirectory="${basedir}/${src.dir}" allowBuildWithError="${allow.build.with.error}" validation="${validation}"/>
@@ -87,6 +89,7 @@
     </target>
     <target name="deps-clean" depends="init" unless="${no.dependencies}">
         <ant target="clean" inheritall="false" antfile="${project.AirlineReservation}/build.xml"/>
+        <ant target="clean" inheritall="false" antfile="${project.TravelGoodClient}/build.xml"/>
     </target>
     <target name="do-clean" depends="init,pre-clean">
         <delete dir="${build.dir}"/>
