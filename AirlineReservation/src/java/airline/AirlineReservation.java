@@ -6,6 +6,7 @@ package airline;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -29,7 +30,7 @@ public class AirlineReservation {
      * Web service operation
      */
     @WebMethod(operationName = "getFlights")
-    public String[] getFlights(@WebParam(name = "flightStart") String flightStart, @WebParam(name = "flightDest") String flightDest, @WebParam(name = "flightDate") String flightDate) {
+    public List<FlightInformation> getFlights(@WebParam(name = "flightStart") String flightStart, @WebParam(name = "flightDest") String flightDest, @WebParam(name = "flightDate") String flightDate) {
         String[] list = new String[5];
         int j = 0;
         for(int i = 0; i<flightList.length; i++){
@@ -40,7 +41,7 @@ public class AirlineReservation {
                 }
             }
         }
-        return list;
+        return null;
     }
 
     /**
