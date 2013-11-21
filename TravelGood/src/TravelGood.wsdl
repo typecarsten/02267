@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="TravelGood" targetNamespace="http://TravelGood.ws"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://TravelGood.ws" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <types>
+        <xsd:schema targetNamespace="http://TravelGood.ws" xmlns:tns="http://TravelGood.ws">
+            <xsd:complexType name="CardInfo">
+                <xsd:sequence maxOccurs="unbounded">
+                    <xsd:element name="CardHolder">
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string"/>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="CardNumber">
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:int"/>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="ExpireDate">
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:date"/>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="HotelInfo">
+                <xsd:sequence maxOccurs="unbounded">
+                    <xsd:element name="HotelName">
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string"/>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="HotelAddress">
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string"/>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="BookingNumber">
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:int"/>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="HotelFullPrice">
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:int"/>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="HotelRequireCreditCard">
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:boolean"/>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </types>
+    <message name="GetHotelRequest">
+        <part name="HotelCity" type="xsd:string"/>
+        <part name="HotelArrivalDate" type="xsd:date"/>
+        <part name="HotelDepartureDate" type="xsd:date"/>
+    </message>
+    <message name="GetHotelResponse">
+        <part name="HotelList" type="tns:HotelInfo"/>
+    </message>
+    <message name="CancelHotelOperationRequest">
+        <part name="HotelBookingNumber" type="xsd:int"/>
+    </message>
+    <message name="CancelHotelOperationResponse">
+        <part name="HotelCancelingMessage" type="xsd:string"/>
+    </message>
+    <message name="CancelHotelOperationFault">
+        <part name="BookingNumberNotExist" type="xsd:string"/>
+    </message>
+    <message name="BookHotelOperationRequest">
+        <part name="BookingNumber" type="xsd:string"/>
+        <part name="CardHolder" type="xsd:string"/>
+        <part name="CardNumber" type="xsd:int"/>
+        <part name="CardExpireDate" type="xsd:dateTime"/>
+        <part name="CardInfo" type="tns:CardInfo"/>
+    </message>
+    <message name="BookHotelOperationResponse">
+        <part name="HotelBookingResponse" type="xsd:boolean"/>
+    </message>
+    <message name="BookHotelOperationFault">
+        <part name="BookingNumberNotExist" type="xsd:string"/>
+        <part name="CardInfoNotExist" type="xsd:string"/>
+    </message>
+    <message name="GetFlightOperationRequest">
+        <part name="FlightStart" type="xsd:string"/>
+        <part name="FlightDest" type="xsd:string"/>
+        <part name="FlightDate" type="xsd:string"/>
+    </message>
+    <message name="GetFlightOperationResponse">
+        <part name="FlightInfo" type="xsd:string"/>
+    </message>
+    <message name="BookFlightRequest">
+        <part name="BookingNumber" type="xsd:int"/>
+        <part name="Cardinfo" type="tns:CardInfo"/>
+    </message>
+    <message name="BookFlightResponse">
+        <part name="FlightBooked" type="xsd:boolean"/>
+    </message>
+    <message name="BookFlightFault">
+        <part name="FlightNumberNotExist" type="xsd:string"/>
+        <part name="CardInfoNotExist" type="xsd:string"/>
+    </message>
+    <message name="CancelFlightOperationRequest">
+        <part name="BookingNumber" type="xsd:int"/>
+        <part name="FlightPrice" type="xsd:int"/>
+        <part name="CardHolder" type="xsd:string"/>
+        <part name="CardNumber" type="xsd:int"/>
+        <part name="ExpireDate" type="xsd:date"/>
+        <part name="CardInfo" type="tns:CardInfo"/>
+    </message>
+    <message name="CancelFlightOperationResponse"/>
+    <message name="CancelFlightFault">
+        <part name="FlightCancelationFailed" type="xsd:string"/>
+    </message>
+    <portType name="TravelGoodOperations">
+        <operation name="GetFlights">
+            <input name="input1" message="tns:GetFlightOperationRequest"/>
+            <output name="output1" message="tns:GetFlightOperationResponse"/>
+        </operation>
+        <operation name="GetHotel">
+            <input name="input1" message="tns:GetHotelRequest"/>
+            <output name="output1" message="tns:GetHotelResponse"/>
+        </operation>
+        <operation name="CancelHotel">
+            <input name="input2" message="tns:CancelHotelOperationRequest"/>
+            <output name="output2" message="tns:CancelHotelOperationResponse"/>
+            <fault name="fault1" message="tns:CancelHotelOperationFault"/>
+        </operation>
+        <operation name="BookHotel">
+            <input name="input3" message="tns:BookHotelOperationRequest"/>
+            <output name="output3" message="tns:BookHotelOperationResponse"/>
+            <fault name="fault1" message="tns:BookHotelOperationFault"/>
+        </operation>
+        <operation name="BookFlight">
+            <input name="input4" message="tns:BookFlightRequest"/>
+            <output name="output4" message="tns:BookFlightResponse"/>
+            <fault name="fault1" message="tns:BookFlightFault"/>
+        </operation>
+        <operation name="CancelFlight">
+            <input name="input5" message="tns:CancelFlightOperationRequest"/>
+            <output name="output5" message="tns:CancelFlightOperationResponse"/>
+            <fault name="fault1" message="tns:CancelFlightFault"/>
+        </operation>
+    </portType>
+    <binding name="TravelGoodBinding" type="tns:TravelGoodOperations">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="GetHotel">
+            <soap:operation/>
+            <input name="input1">
+                <soap:body use="literal" namespace="http://TravelGood.ws"/>
+            </input>
+            <output name="output1">
+                <soap:body use="literal" namespace="http://TravelGood.ws"/>
+            </output>
+            <fault name="fault1">
+                <soap:fault name="fault1" use="literal" namespace="http://TravelGood.ws"/>
+            </fault>
+        </operation>
+    </binding>
+    <service name="TravelGoodService">
+        <port name="TravelGoodPort" binding="tns:TravelGoodBinding">
+            <soap:address location="http://localhost:${HttpDefaultPort}/TravelGoodService/TravelGoodPort"/>
+        </port>
+    </service>
+    <plnk:partnerLinkType name="TravelGood">
+        <!-- A partner link type is automatically generated when a new port type is added. Partner link types are used by BPEL processes. 
+In a BPEL process, a partner link represents the interaction between the BPEL process and a partner service. Each partner link is associated with a partner link type.
+A partner link type characterizes the conversational relationship between two services. The partner link type can have one or two roles.-->
+        <plnk:role name="TravelGoodPortTypeRole" portType="tns:TravelGoodOperations"/>
+    </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="TravelGood2">
+        <!-- A partner link type is automatically generated when a new port type is added. Partner link types are used by BPEL processes. 
+In a BPEL process, a partner link represents the interaction between the BPEL process and a partner service. Each partner link is associated with a partner link type.
+A partner link type characterizes the conversational relationship between two services. The partner link type can have one or two roles.-->
+        <plnk:role name="TravelGoodAirlineRole" portType="tns:TravelGoodAirline"/>
+    </plnk:partnerLinkType>
+</definitions>
