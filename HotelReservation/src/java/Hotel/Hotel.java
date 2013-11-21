@@ -45,19 +45,27 @@ public class Hotel {
         return creditCardGuarantee.toString();
     }
     
-    public String getPrice(){
-        return Integer.toString(price);
+    public int getPrice(){
+        return price;
     }
     
     public String getReservationService(){
         return reservationService;
     }
     
-    public String getBookingNo(){
-        return Integer.toString(bookingNo);
+    public int getBookingNo(){
+        return bookingNo;
     }
     
     public String toString(){
         return name + address + city + creditCardGuarantee + price + reservationService + getBookingNo();
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    void setBookingNo(int bookingNo) {
+        this.bookingNo = bookingNo;
     }
 }
