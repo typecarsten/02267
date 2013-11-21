@@ -5,11 +5,14 @@
 package airline;
 
 import java.util.Date;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Matias
  */
+@XmlRootElement
+
 public class Flight {
     
     private String flightStart;
@@ -17,6 +20,8 @@ public class Flight {
     private String departure;
     private String arrival;
     private String carrier;
+    
+    public Flight() {}
    
     public Flight(String flightStart, String flightDest, String departure, String arrival, String carrier){
         

@@ -5,6 +5,8 @@
 package airline;
 
 import java.util.Date;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author Matias
@@ -15,6 +17,8 @@ public class FlightInformation {
     private String price;
     private String flightService;
     private Flight flight;
+    
+    public FlightInformation() {}
     
     public FlightInformation(String bookingNo, String price, String flightService, Flight flight) {
     
@@ -38,4 +42,6 @@ public class FlightInformation {
     public Flight getFlight(){
         return flight;
     }
+    
+    public void setFlight(Flight f) {}
 }   
