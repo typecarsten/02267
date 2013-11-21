@@ -11,7 +11,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.xml.ws.WebServiceRef;
-import Hotel.BankDataPreparer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -80,11 +79,14 @@ public class HotelReservation {
         hotelList.add(AmediaHotel);
         int j = 0;
         for (Hotel hotel : hotelList){
+            if(city == hotel.getCity()){
             Hotel temp = hotel;
             temp.setPrice(hotel.getPrice() * getLengthOfStay(arrivalDate, depDate));
             temp.setBookingNo(j);
             j++;
             bookingList.add(temp);
+            }
+            
         }
         return bookingList;
     }
@@ -142,5 +144,7 @@ public class HotelReservation {
         dk.dtu.imm.fastmoney.BankPortType port = service.getBankPort();
         return port.validateCreditCard(group, creditCardInfo, amount);
     }
+
+
     
 }
