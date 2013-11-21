@@ -5,7 +5,6 @@
 package airline;
 
 import dk.dtu.imm.fastmoney.CreditCardFaultMessage;
-import dk.dtu.imm.fastmoney.*;
 import dk.dtu.imm.fastmoney.types.AccountType;
 import dk.dtu.imm.fastmoney.types.CreditCardInfoType;
 import dk.dtu.imm.fastmoney.types.ExpirationDateType;
@@ -43,7 +42,7 @@ public class Bank {
                return refundCreditCard(group, creditCardInfo, amount, accountType);
     }
 
-    private static boolean chargeCreditCard(int group, dk.dtu.imm.fastmoney.types.CreditCardInfoType creditCardInfo, int amount, dk.dtu.imm.fastmoney.types.AccountType account) throws CreditCardFaultMessage {
+    private static boolean chargeCreditCard(int group, dk.dtu.imm.fastmoney.types.CreditCardInfoType creditCardInfo, int amount, dk.dtu.imm.fastmoney.types.AccountType account) throws dk.dtu.imm.fastmoney.CreditCardFaultMessage {
         dk.dtu.imm.fastmoney.BankService service = new dk.dtu.imm.fastmoney.BankService();
         dk.dtu.imm.fastmoney.BankPortType port = service.getBankPort();
         return port.chargeCreditCard(group, creditCardInfo, amount, account);
@@ -54,6 +53,8 @@ public class Bank {
         dk.dtu.imm.fastmoney.BankPortType port = service.getBankPort();
         return port.refundCreditCard(group, creditCardInfo, amount, account);
     }
+
+
     
     
     

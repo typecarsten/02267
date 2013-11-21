@@ -144,5 +144,7 @@ public class HotelReservation {
         dk.dtu.imm.fastmoney.BankPortType port = service.getBankPort();
         return port.validateCreditCard(group, creditCardInfo, amount);
     }
+
+
     
 }
