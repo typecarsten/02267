@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process
+    name="travelGood"
+    targetNamespace="http://enterprise.netbeans.org/bpel/TravelGood/travelGood"
+    xmlns:tns="http://enterprise.netbeans.org/bpel/TravelGood/travelGood"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
+    xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2"
+    xmlns:sxat="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Attachment"
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling">
+    <import namespace="http://TravelGood.ws" location="TravelGood.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="PartnerLink1" xmlns:tns="http://TravelGood.ws" partnerLinkType="tns:TravelGood" myRole="TravelGoodPortTypeRole"/>
+    </partnerLinks>
+    <sequence>
+        <pick name="Pick1">
+            <onMessage partnerLink="PartnerLink1" operation="GetFlights" xmlns:tns="http://TravelGood.ws" portType="tns:TravelGoodOperations">
+                <sequence name="Sequence2">
+                    <assign name="Assign2"/>
+                    <reply name="Reply1" partnerLink="PartnerLink1" operation="GetFlights" portType="tns:TravelGoodOperations"/>
+                    <pick name="Pick4">
+                        <onMessage partnerLink="PartnerLink1" operation="BookFlight" portType="tns:TravelGoodOperations">
+                            <sequence name="Sequence5">
+                                <assign name="Assign5"/>
+                                <reply name="Reply5" partnerLink="PartnerLink1" operation="BookFlight" portType="tns:TravelGoodOperations"/>
+                                <pick name="Pick5">
+                                    <onMessage partnerLink="PartnerLink1" operation="CancelFlight" portType="tns:TravelGoodOperations">
+                                        <sequence name="Sequence6">
+                                            <assign name="Assign6"/>
+                                            <reply name="Reply6" partnerLink="PartnerLink1" operation="CancelFlight" portType="tns:TravelGoodOperations"/>
+                                        </sequence>
+                                    </onMessage>
+                                    <onMessage>
+                                        <exit name="Exit4"/>
+                                    </onMessage>
+                                </pick>
+                            </sequence>
+                        </onMessage>
+                        <onMessage>
+                            <exit name="Exit3"/>
+                        </onMessage>
+                    </pick>
+                </sequence>
+            </onMessage>
+            <onMessage partnerLink="PartnerLink1" operation="GetHotel" xmlns:tns="http://TravelGood.ws" portType="tns:TravelGoodOperations">
+                <sequence name="Sequence1">
+                    <assign name="Assign1"/>
+                    <reply name="Reply2" partnerLink="PartnerLink1" operation="GetHotel" portType="tns:TravelGoodOperations"/>
+                    <pick name="Pick2">
+                        <onMessage>
+                            <exit name="Exit1"/>
+                        </onMessage>
+                        <onMessage partnerLink="PartnerLink1" operation="BookHotel" portType="tns:TravelGoodOperations">
+                            <sequence name="Sequence3">
+                                <assign name="Assign3"/>
+                                <reply name="Reply3" partnerLink="PartnerLink1" operation="BookHotel" portType="tns:TravelGoodOperations"/>
+                                <pick name="Pick3">
+                                    <onMessage>
+                                        <exit name="Exit2"/>
+                                    </onMessage>
+                                    <onMessage partnerLink="PartnerLink1" operation="CancelHotel" portType="tns:TravelGoodOperations">
+                                        <sequence name="Sequence4">
+                                            <assign name="Assign4"/>
+                                            <reply name="Reply4" partnerLink="PartnerLink1" operation="CancelHotel" portType="tns:TravelGoodOperations"/>
+                                        </sequence>
+                                    </onMessage>
+                                </pick>
+                            </sequence>
+                        </onMessage>
+                    </pick>
+                </sequence>
+            </onMessage>
+        </pick>
+    </sequence>
+</process>
