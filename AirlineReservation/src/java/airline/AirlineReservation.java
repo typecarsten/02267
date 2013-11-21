@@ -4,9 +4,12 @@
  */
 package airline;
 
+import dk.dtu.imm.fastmoney.CreditCardFaultMessage;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -18,49 +21,77 @@ import javax.jws.WebService;
 @WebService(serviceName = "AirlineReservation")
 public class AirlineReservation {  
     
-    FlightInformation FI1 = new FlightInformation("00001", "500", "Momondo", new Flight("Copenhagen", "Paris", "01;01;10;30" , "01;01;12;30", "SAS"));
-    FlightInformation FI2 = new FlightInformation("00002", "650", "Momondo", new Flight("Billund", "Berlin", "02;04;8;10" , "02;04;10;30", "Ryan Air"));
-    FlightInformation FI3 = new FlightInformation("00003", "700", "Momondo", new Flight("Aalborg", "New York", "05;01;14;00" , "05;01;23;30", "SAS"));
-    FlightInformation FI4 = new FlightInformation("00004", "400", "Momondo", new Flight("Roskilde", "New Delhi", "05;02;9;00" , "05;02;17;45", "Ryan Air"));
-    FlightInformation FI5 = new FlightInformation("00005", "450", "Momondo", new Flight("Copenhagen", "Paris", "01;13;12;00" , "01;13;15;00", "SAS"));
+    FlightInformation FI1 = new FlightInformation(1, 500, "Momondo", new Flight("Copenhagen", "Paris", "01;01;10;30" , "01;01;12;30", "SAS"));
+    FlightInformation FI2 = new FlightInformation(2, 650, "Momondo", new Flight("Billund", "Berlin", "02;04;8;10" , "02;04;10;30", "Ryan Air"));
+    FlightInformation FI3 = new FlightInformation(3, 700, "Momondo", new Flight("Aalborg", "New York", "05;01;14;00" , "05;01;23;30", "SAS"));
+    FlightInformation FI4 = new FlightInformation(4, 400, "Momondo", new Flight("Roskilde", "New Delhi", "05;02;9;00" , "05;02;17;45", "Ryan Air"));
+    FlightInformation FI5 = new FlightInformation(5, 450, "Momondo", new Flight("Copenhagen", "Paris", "01;13;12;00" , "01;13;15;00", "SAS"));
     
-    FlightInformation[] flightList = {FI1, FI2, FI3, FI4, FI5};
-    
+    ArrayList<FlightInformation> flightList = new ArrayList<FlightInformation>();   
+    Bank bank = new Bank();
+    int amount = 0;
+    ArrayList<FlightInformation> bookedFlights = new ArrayList<FlightInformation>();
     /**
      * Web service operation
      */
     @WebMethod(operationName = "getFlights")
     public List<FlightInformation> getFlights(@WebParam(name = "flightStart") String flightStart, @WebParam(name = "flightDest") String flightDest, @WebParam(name = "flightDate") String flightDate) {
-        String[] list = new String[5];
-        int j = 0;
-        for(int i = 0; i<flightList.length; i++){
-            if(flightList[i].getFlight().getFlightStart().equals(flightStart)){
-                if(flightList[i].getFlight().getFlightDest().equals(flightDest)){
-                list[j] = flightList[i].getBookingNo() + " " + flightList[i].getPrice() + " " + flightList[i].getFlightService() + " " + flightList[i].getFlight().getFlightStart() + " " + flightList[i].getFlight().getFlightDest() + " " + flightList[i].getFlight().getDeparture() + " " + flightList[i].getFlight().getArrival();
-                j = j +1;
+        flightList.add(FI1);
+        flightList.add(FI2);
+        flightList.add(FI3);
+        flightList.add(FI4);
+        flightList.add(FI5);
+        ArrayList<FlightInformation> bookingList = new ArrayList<FlightInformation>();
+        for(FlightInformation flightInformation : flightList){
+            if(flightInformation.getFlight().getFlightStart().equals(flightStart)){
+                if(flightInformation.getFlight().getFlightDest().equals(flightDest)){
+                    bookingList.add(flightInformation);
                 }
             }
         }
-        return null;
+        return bookingList;
     }
 
     /**
      * Web service operation
      */
     @WebMethod(operationName = "bookFlight")
-    public boolean bookFlight(@WebParam(name = "flightBookingNumber") int flightBookingNumber, @WebParam(name = "cardHolder") String cardHolder, @WebParam(name = "cardNumber") int cardNumber, @WebParam(name = "cardExpireDate") String cardExpireDate) {
-        //If booking successful then return true if not successful return false
-        return false;
+    public boolean bookFlight(@WebParam(name = "flightBookingNumber") int flightBookingNumber, @WebParam(name = "cardHolder") String cardHolder, @WebParam(name = "cardNumber") String cardNumber, @WebParam(name = "month") int month, @WebParam(name = "year") int year) throws Exception {
+        for (FlightInformation flightInformation : flightList) {
+            if (flightInformation.getBookingNo() == flightBookingNumber){
+                amount = flightInformation.getPrice();
+                bookedFlights.add(flightInformation);
+                try {
+            bank.chargeCreditCard(cardHolder, cardNumber, month, year, amount);
+            return true;
+        } catch (CreditCardFaultMessage ex) {
+            Logger.getLogger(AirlineReservation.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+            }
+        }
+        throw new Exception("Wrong BookingNo");
     }
 
     /**
      * Web service operation
      */
     @WebMethod(operationName = "cancelFlight")
-    public boolean cancelFlight(@WebParam(name = "flightBookingNumber") int flightBookingNumber, @WebParam(name = "price") int price , @WebParam(name = "cardHolder") String cardHolder, @WebParam(name = "cardNumber") int cardNumber, @WebParam(name = "cardExpireDate") String cardExpireDate) {
-        double refundPrice = price / 2;
-        //If successful return true, if not successful return false
-        return false;
+    public boolean cancelFlight(@WebParam(name = "flightBookingNumber") int flightBookingNumber, @WebParam(name = "price") int price , @WebParam(name = "cardHolder") String cardHolder, @WebParam(name = "cardNumber") String cardNumber, @WebParam(name = "month") int month, @WebParam(name = "year") int year) throws Exception {
+        int refundPrice = price / 2;
+        for (FlightInformation flightInformation : flightList){
+            if (flightBookingNumber == flightInformation.getBookingNo()){
+                bookedFlights.remove(flightInformation);
+                try {
+                    bank.refundMoney(cardHolder, cardNumber, month, year, amount);
+                    return true;
+                } catch (CreditCardFaultMessage ex) {
+                    Logger.getLogger(AirlineReservation.class.getName()).log(Level.SEVERE, null, ex);
+                    return false;
+                }
+            }
+        }
+        throw new Exception("Wrong BookingNo");
     }
     
 }

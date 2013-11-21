@@ -13,25 +13,25 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 public class FlightInformation {
    
-    private String bookingNo;
-    private String price;
+    private int bookingNo;
+    private int price;
     private String flightService;
     private Flight flight;
     
     public FlightInformation() {}
     
-    public FlightInformation(String bookingNo, String price, String flightService, Flight flight) {
+    public FlightInformation(int bookingNo, int price, String flightService, Flight flight) {
     
         this.bookingNo = bookingNo;
         this.price = price;
         this.flightService = flightService;
         this.flight = flight;
     }
-    public String getBookingNo(){
+    public int getBookingNo(){
         return bookingNo;
     }
     
-    public String getPrice(){
+    public int getPrice(){
         return price;
     }
     
