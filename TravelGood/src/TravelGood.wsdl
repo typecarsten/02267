@@ -89,7 +89,7 @@
     <message name="GetFlightOperationRequest">
         <part name="FlightStart" type="xsd:string"/>
         <part name="FlightDest" type="xsd:string"/>
-        <part name="FlightDate" type="xsd:string"/>
+        <part name="FlightDate" type="xsd:date"/>
     </message>
     <message name="GetFlightOperationResponse">
         <part name="FlightInfo" type="xsd:string"/>
@@ -113,7 +113,9 @@
         <part name="ExpireDate" type="xsd:date"/>
         <part name="CardInfo" type="tns:CardInfo"/>
     </message>
-    <message name="CancelFlightOperationResponse"/>
+    <message name="CancelFlightOperationResponse">
+        <part name="IsDone" type="xsd:boolean"/>
+    </message>
     <message name="CancelFlightFault">
         <part name="FlightCancelationFailed" type="xsd:string"/>
     </message>

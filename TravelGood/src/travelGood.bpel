@@ -9,15 +9,23 @@
     xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
     xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2"
     xmlns:sxat="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Attachment"
-    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling">
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:ns0="http://TravelGood.ws" xmlns:ns1="http://airline/" xmlns:ns2="http://enterprise.netbeans.org/bpel/WizardCorrelationProperties">
     <import namespace="http://TravelGood.ws" location="TravelGood.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://enterprise.netbeans.org/bpel/AirlineReservationWrapper" location="AirlineReservationWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://airline/" location="http://localhost:8080/AirlineReservation/AirlineReservation?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://enterprise.netbeans.org/bpel/WizardCorrelationProperties" location="WizardCorrelationProperties.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="Airline" xmlns:tns="http://enterprise.netbeans.org/bpel/AirlineReservationWrapper" partnerLinkType="tns:AirlineReservationLinkType" partnerRole="AirlineReservationRole"/>
         <partnerLink name="PartnerLink1" xmlns:tns="http://TravelGood.ws" partnerLinkType="tns:TravelGood" myRole="TravelGoodPortTypeRole"/>
     </partnerLinks>
     <variables>
+        <variable name="CancelFlightOut2" xmlns:tns="http://airline/" messageType="tns:cancelFlightResponse"/>
+        <variable name="CancelFlightOut1" xmlns:tns="http://TravelGood.ws" messageType="tns:CancelFlightOperationResponse"/>
+        <variable name="CancelFlightOut" xmlns:tns="http://airline/" messageType="tns:cancelFlightResponse"/>
+        <variable name="CancelFlightIn1" xmlns:tns="http://airline/" messageType="tns:cancelFlight"/>
+        <variable name="BookFlightOut1" xmlns:tns="http://TravelGood.ws" messageType="tns:BookFlightResponse"/>
+        <variable name="BookFlightOut" xmlns:tns="http://airline/" messageType="tns:bookFlightResponse"/>
+        <variable name="BookFlightIn1" xmlns:tns="http://airline/" messageType="tns:bookFlight"/>
         <variable name="GetFlightsOut1" xmlns:tns="http://TravelGood.ws" messageType="tns:GetFlightOperationResponse"/>
         <variable name="GetFlightsOut" xmlns:tns="http://airline/" messageType="tns:getFlightsResponse"/>
         <variable name="GetFlightsIn1" xmlns:tns="http://airline/" messageType="tns:getFlights"/>
@@ -28,76 +36,125 @@
         <variable name="GetFlightsIn" xmlns:tns="http://TravelGood.ws" messageType="tns:GetFlightOperationRequest"/>
         <variable name="GetHotelIn" xmlns:tns="http://TravelGood.ws" messageType="tns:GetHotelRequest"/>
     </variables>
+    <correlationSets>
+        <correlationSet name="wzrd_set_GetListOfFlights_OnMessage_Pick1_GetFlights" properties="ns2:wzrd_prop_flightDest_string"/>
+        <correlationSet name="wzrd_set_GetListOfFlights_OnMessage_Pick1_GetFlights_1" properties="ns2:wzrd_prop_flightStart_string"/>
+        <correlationSet name="wzrd_set_GetListOfFlights_OnMessage_Pick1_GetFlights_2" properties="ns2:wzrd_prop_flightDate_string"/>
+        <correlationSet name="wzrd_set_Invoke2_OnMessage_Pick1_BookFlight" properties="ns2:wzrd_prop_flightBookingNumber_int"/>
+        <correlationSet name="wzrd_set_Invoke6_OnMessage_Pick1_CancelFlight" properties="ns2:wzrd_prop_flightBookingNumber_int"/>
+    </correlationSets>
     <sequence>
-        <pick name="Pick1">
-            <onMessage partnerLink="PartnerLink1" operation="GetFlights" xmlns:tns="http://TravelGood.ws" portType="tns:TravelGoodOperations" variable="GetFlightsIn">
-                <sequence name="Sequence2">
-                    <assign name="Assign7">
-                        <copy>
-                            <from variable="GetFlightsIn"/>
-                            <to variable="GetFlightsIn1"/>
-                        </copy>
-                    </assign>
-                    <invoke name="Invoke1" partnerLink="Airline" operation="getFlights" xmlns:tns="http://airline/" portType="tns:AirlineReservation" inputVariable="GetFlightsIn1" outputVariable="GetFlightsOut"/>
-                    <assign name="Assign2">
-                        <copy>
-                            <from variable="GetFlightsOut"/>
-                            <to variable="GetFlightsOut1"/>
-                        </copy>
-                    </assign>
-                    <reply name="Reply1" partnerLink="PartnerLink1" operation="GetFlights" portType="tns:TravelGoodOperations" variable="GetFlightsOut1"/>
-                    <pick name="Pick4">
-                        <onMessage partnerLink="PartnerLink1" operation="BookFlight" portType="tns:TravelGoodOperations" variable="BookFlightIn">
-                            <sequence name="Sequence5">
-                                <assign name="Assign5"/>
-                                <reply name="Reply5" partnerLink="PartnerLink1" operation="BookFlight" portType="tns:TravelGoodOperations"/>
-                                <pick name="Pick5">
-                                    <onMessage partnerLink="PartnerLink1" operation="CancelFlight" portType="tns:TravelGoodOperations" variable="CancelFlightIn">
-                                        <sequence name="Sequence6">
-                                            <assign name="Assign6"/>
-                                            <reply name="Reply6" partnerLink="PartnerLink1" operation="CancelFlight" portType="tns:TravelGoodOperations"/>
-                                        </sequence>
-                                    </onMessage>
-                                    <onMessage>
-                                        <exit name="Exit4"/>
-                                    </onMessage>
-                                </pick>
+        <forEach name="ForEach1" parallel="no" counterName="ForEach1Counter">
+            <scope name="Scope1">
+                <sequence name="Sequence5">
+                    <pick name="Pick1">
+                        <onMessage partnerLink="PartnerLink1" operation="GetFlights" portType="ns0:TravelGoodOperations">
+                            <correlations>
+                                <correlation set="wzrd_set_GetListOfFlights_OnMessage_Pick1_GetFlights" initiate="no"/>
+                                <correlation set="wzrd_set_GetListOfFlights_OnMessage_Pick1_GetFlights_1" initiate="no"/>
+                                <correlation set="wzrd_set_GetListOfFlights_OnMessage_Pick1_GetFlights_2" initiate="no"/>
+                            </correlations>
+                            <sequence name="GetFlight">
+                                <assign name="Assign7">
+                                        <copy>
+                                                <from variable="GetFlightsIn"/>
+                                                    <to variable="GetFlightsIn1"/>
+                                            </copy>
+                                    </assign>
+                                    <invoke name="GetListOfFlights" partnerLink="Airline" operation="getFlights" portType="ns1:AirlineReservation" inputVariable="GetFlightsIn1" outputVariable="GetFlightsOut">
+                                        <correlations>
+                                            <correlation set="wzrd_set_GetListOfFlights_OnMessage_Pick1_GetFlights" initiate="yes" pattern="request"/>
+                                            <correlation set="wzrd_set_GetListOfFlights_OnMessage_Pick1_GetFlights_1" initiate="yes" pattern="request"/>
+                                            <correlation set="wzrd_set_GetListOfFlights_OnMessage_Pick1_GetFlights_2" initiate="yes" pattern="request"/>
+                                        </correlations>
+                                    </invoke>
+                                    <assign name="Assign2">
+                                        <copy>
+                                                <from variable="GetFlightsOut"/>
+                                                    <to variable="GetFlightsOut1"/>
+                                            </copy>
+                                    </assign>
+                                    <reply name="SendFlightListToClient" partnerLink="PartnerLink1" operation="GetFlights" portType="ns0:TravelGoodOperations" variable="GetFlightsOut1"/>
                             </sequence>
                         </onMessage>
-                        <onMessage>
-                            <exit name="Exit3"/>
+                        <onMessage partnerLink="PartnerLink1" operation="BookFlight" portType="ns0:TravelGoodOperations">
+                            <correlations>
+                                <correlation set="wzrd_set_Invoke2_OnMessage_Pick1_BookFlight" initiate="no"/>
+                            </correlations>
+                            <sequence name="BookFlight">
+                                <assign name="Assign8">
+                                        <copy>
+                                                <from variable="BookFlightIn" part="BookingNumber"/>
+                                                    <to variable="BookFlightIn" part="BookingNumber"/>
+                                            </copy>
+                                            <copy>
+                                                <from variable="BookFlightIn" part="Cardinfo"/>
+                                                    <to variable="BookFlightIn" part="Cardinfo"/>
+                                            </copy>
+                                    </assign>
+                                    <invoke name="Invoke2" partnerLink="Airline" operation="bookFlight" portType="ns1:AirlineReservation" inputVariable="BookFlightIn1" outputVariable="BookFlightOut">
+                                        <correlations>
+                                            <correlation set="wzrd_set_Invoke2_OnMessage_Pick1_BookFlight" initiate="yes" pattern="request"/>
+                                        </correlations>
+                                    </invoke>
+                                    <assign name="Assign10">
+                                        <copy>
+                                                <from variable="BookFlightOut" part="parameters"/>
+                                                    <to variable="BookFlightOut1" part="FlightBooked"/>
+                                            </copy>
+                                    </assign>
+                                    <reply name="SendBookFlightConfirmToClient" partnerLink="PartnerLink1" operation="BookFlight" portType="ns0:TravelGoodOperations" variable="BookFlightOut1"/>
+                            </sequence>
+                        </onMessage>
+                        <onMessage partnerLink="PartnerLink1" operation="CancelFlight" portType="ns0:TravelGoodOperations">
+                            <correlations>
+                                <correlation set="wzrd_set_Invoke6_OnMessage_Pick1_CancelFlight" initiate="no"/>
+                            </correlations>
+                            <sequence name="CancelFlight">
+                                <assign name="Assign11">
+                                        <copy>
+                                                <from variable="CancelFlightIn"/>
+                                                    <to variable="CancelFlightIn1"/>
+                                            </copy>
+                                    </assign>
+                                    <invoke name="Invoke6" partnerLink="Airline" operation="cancelFlight" portType="ns1:AirlineReservation" outputVariable="CancelFlightOut2" inputVariable="CancelFlightIn1">
+                                        <correlations>
+                                            <correlation set="wzrd_set_Invoke6_OnMessage_Pick1_CancelFlight" initiate="yes" pattern="request"/>
+                                        </correlations>
+                                    </invoke>
+                                    <assign name="Assign6">
+                                        <copy>
+                                                <from variable="CancelFlightOut1" part="IsDone"/>
+                                                    <to variable="CancelFlightOut1"/>
+                                            </copy>
+                                    </assign>
+                                    <reply name="SendCancleFlightConfirmToClient" partnerLink="PartnerLink1" operation="CancelFlight" portType="ns0:TravelGoodOperations" variable="CancelFlightOut1"/>
+                            </sequence>
+                        </onMessage>
+                        <onMessage partnerLink="PartnerLink1" operation="GetHotel" portType="ns0:TravelGoodOperations">
+                            <sequence name="GetHotel">
+                                <assign name="Assign9"/>
+                                    <invoke name="Invoke4"/>
+                                    <assign name="Assign1"/>
+                                    <reply name="SendHotelListToClient" partnerLink="PartnerLink1" operation="GetHotel" portType="ns0:TravelGoodOperations"/>
+                            </sequence>
+                        </onMessage>
+                        <onMessage partnerLink="PartnerLink1" operation="BookHotel" portType="ns0:TravelGoodOperations">
+                            <sequence name="BookHotel">
+                                <invoke name="Invoke5"/>
+                                    <assign name="Assign3"/>
+                                    <reply name="SendBookHotelConfirmToClient" partnerLink="PartnerLink1" operation="BookHotel" portType="ns0:TravelGoodOperations"/>
+                            </sequence>
+                        </onMessage>
+                        <onMessage partnerLink="PartnerLink1" operation="CancelHotel" portType="ns0:TravelGoodOperations">
+                            <sequence name="CancelHotel">
+                                <assign name="Assign4"/>
+                                    <reply name="SendCancelHotelConfirmToClient" partnerLink="PartnerLink1" operation="CancelHotel" portType="ns0:TravelGoodOperations"/>
+                            </sequence>
                         </onMessage>
                     </pick>
                 </sequence>
-            </onMessage>
-            <onMessage partnerLink="PartnerLink1" operation="GetHotel" xmlns:tns="http://TravelGood.ws" portType="tns:TravelGoodOperations" variable="GetHotelIn">
-                <sequence name="Sequence1">
-                    <assign name="Assign1"/>
-                    <reply name="Reply2" partnerLink="PartnerLink1" operation="GetHotel" portType="tns:TravelGoodOperations"/>
-                    <pick name="Pick2">
-                        <onMessage>
-                            <exit name="Exit1"/>
-                        </onMessage>
-                        <onMessage partnerLink="PartnerLink1" operation="BookHotel" portType="tns:TravelGoodOperations" variable="BookHotelIn">
-                            <sequence name="Sequence3">
-                                <assign name="Assign3"/>
-                                <reply name="Reply3" partnerLink="PartnerLink1" operation="BookHotel" portType="tns:TravelGoodOperations"/>
-                                <pick name="Pick3">
-                                    <onMessage>
-                                        <exit name="Exit2"/>
-                                    </onMessage>
-                                    <onMessage partnerLink="PartnerLink1" operation="CancelHotel" portType="tns:TravelGoodOperations" variable="CancelHotelIn">
-                                        <sequence name="Sequence4">
-                                            <assign name="Assign4"/>
-                                            <reply name="Reply4" partnerLink="PartnerLink1" operation="CancelHotel" portType="tns:TravelGoodOperations"/>
-                                        </sequence>
-                                    </onMessage>
-                                </pick>
-                            </sequence>
-                        </onMessage>
-                    </pick>
-                </sequence>
-            </onMessage>
-        </pick>
+            </scope>
+        </forEach>
     </sequence>
 </process>

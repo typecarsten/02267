@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="WizardCorrelationProperties.wsdl" targetNamespace="http://enterprise.netbeans.org/bpel/WizardCorrelationProperties" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:ns="http://airline/" xmlns:ns1="http://TravelGood.ws" xmlns:tns="http://enterprise.netbeans.org/bpel/WizardCorrelationProperties">
+    <import namespace="http://airline/" location="localhost_8080/AirlineReservation/AirlineReservation.wsdl"/>
+    <import namespace="http://TravelGood.ws" location="TravelGood.wsdl"/>
+    <types>
+        <xsd:schema targetNamespace="http://enterprise.netbeans.org/bpel/WizardCorrelationProperties">
+            <xsd:import namespace="http://airline/" schemaLocation="http://localhost:8080/AirlineReservation/AirlineReservation?xsd=1"/>
+        </xsd:schema>
+    </types>
+    <vprop:property name="wzrd_prop_flightDest_string" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="tns:wzrd_prop_flightDest_string" messageType="ns:getFlights" part="parameters">
+        <vprop:query>/ns:getFlights/flightDest</vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias propertyName="tns:wzrd_prop_flightDest_string" messageType="ns1:GetFlightOperationRequest" part="FlightDest"/>
+    <vprop:property name="wzrd_prop_flightStart_string" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="tns:wzrd_prop_flightStart_string" messageType="ns:getFlights" part="parameters">
+        <vprop:query>/ns:getFlights/flightStart</vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias propertyName="tns:wzrd_prop_flightStart_string" messageType="ns1:GetFlightOperationRequest" part="FlightStart"/>
+    <vprop:property name="wzrd_prop_flightDate_string" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="tns:wzrd_prop_flightDate_string" messageType="ns:getFlights" part="parameters">
+        <vprop:query>/ns:getFlights/flightDate</vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias propertyName="tns:wzrd_prop_flightDate_string" messageType="ns1:GetFlightOperationRequest" part="FlightDate"/>
+    <vprop:property name="wzrd_prop_flightBookingNumber_int" type="xsd:int"/>
+    <vprop:propertyAlias propertyName="tns:wzrd_prop_flightBookingNumber_int" messageType="ns:bookFlight" part="parameters">
+        <vprop:query>/ns:bookFlight/flightBookingNumber</vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias propertyName="tns:wzrd_prop_flightBookingNumber_int" messageType="ns1:BookFlightRequest" part="BookingNumber"/>
+    <vprop:propertyAlias propertyName="tns:wzrd_prop_flightBookingNumber_int" messageType="ns:cancelFlight" part="parameters">
+        <vprop:query>/ns:cancelFlight/flightBookingNumber</vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias propertyName="tns:wzrd_prop_flightBookingNumber_int" messageType="ns1:CancelFlightOperationRequest" part="BookingNumber"/>
+</definitions>
