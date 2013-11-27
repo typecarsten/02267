@@ -21,7 +21,9 @@ public class Hotel {
     private String reservationService = null;
     private int bookingNo = 0;
     
-    
+    public Hotel(){
+        
+    }
     
     public Hotel(String name, String address, String city, Boolean creditCardGuarantee, int price, String reservationService, int bookingNo){
         this.name = name;
