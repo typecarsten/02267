@@ -25,7 +25,7 @@ public class HotelReservation {
         private Hotel BlueSea = new Hotel("Blue Sea", "Dragonara Road St. Julian's", "Malta", true, 300, "Momondo.dk" ,0);
         private Hotel MarinaHotel = new Hotel("Marina Hotel", "St. Georges Bay St. Julian's", "malta", false, 1000, "NyhavnTravel" ,0);
         private Hotel AmediaHotel = new Hotel("Amedia Hotel", "Kurfüerstendamm 203", "Berlin", true, 500, "Momondo.dk",0);
-        private Hotel[] hotelList = {DreamDownTown,CasaHotel,ValbyHotel,WakeUpCopenhagen,BlueSea,MarinaHotel,AmediaHotel};  
+                ArrayList<Hotel> hotelList = new ArrayList<Hotel>();   
         private ArrayList<Hotel> bookingList = new ArrayList<Hotel>(); //tempbooking list
         
         private String[] arrivalDateArray;
@@ -65,6 +65,13 @@ public class HotelReservation {
      */
     @WebMethod(operationName = "getHotel")
     public ArrayList<Hotel> getHotel(@WebParam(name = "city") String city, @WebParam(name = "arrivalDate") String arrivalDate, @WebParam(name = "depDate") String depDate) {
+        hotelList.add(DreamDownTown);
+        hotelList.add(CasaHotel);
+        hotelList.add(ValbyHotel);
+        hotelList.add(WakeUpCopenhagen);
+        hotelList.add(BlueSea);
+        hotelList.add(MarinaHotel);
+        hotelList.add(AmediaHotel);
         int j = 1;
         for (Hotel hotel : hotelList){
             if(city.equalsIgnoreCase(hotel.getCity())){
