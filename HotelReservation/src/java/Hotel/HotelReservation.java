@@ -4,13 +4,11 @@
  */
 package Hotel;
 
-import dk.dtu.imm.fastmoney.BankService;
 import dk.dtu.imm.fastmoney.CreditCardFaultMessage;
 import java.util.*;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
-import javax.xml.ws.WebServiceRef;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -19,24 +17,21 @@ import java.util.logging.Logger;
  */
 @WebService(serviceName = "HotelReservation")
 public class HotelReservation {
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/fastmoney.imm.dtu.dk_8080/BankService.wsdl")
-    private BankService service;
     
-        Hotel DreamDownTown = new Hotel("Dream Downtown", "Wallstreet 25", "New York", true, 200, "FleggaardReservation", 0);
-        Hotel CasaHotel = new Hotel("Cassa Hotel", "fifth-avenue 10", "New York", false, 400, "JohnyReservation", 0);
-        Hotel ValbyHotel = new Hotel("ValbyHotel", "Valbylanggade 5", "Copenhagen", true, 100, "Hotels.com", 0);
-        Hotel WakeUpCopenhagen = new Hotel("Wakeup Copenhagen", "Carsten Nieburhs Gade 11", "Copenhagen", true, 500, "Hotels.com", 0);
-        Hotel BlueSea = new Hotel("Blue Sea", "Dragonara Road St. Julian's", "Malta", true, 300, "Momondo.dk" ,0);
-        Hotel MarinaHotel = new Hotel("Marina Hotel", "St. Georges Bay St. Julian's", "malta", false, 1000, "NyhavnTravel" ,0);
-        Hotel AmediaHotel = new Hotel("Amedia Hotel", "Kurfüerstendamm 203", "Berlin", true, 500, "Momondo.dk",0);
-        ArrayList<Hotel> hotelList = new ArrayList<Hotel>();  
-        ArrayList<Hotel> bookingList = new ArrayList<Hotel>(); //tempbooking list
+        private Hotel DreamDownTown = new Hotel("Dream Downtown", "Wallstreet 25", "New York", true, 200, "FleggaardReservation", 0);
+        private Hotel CasaHotel = new Hotel("Cassa Hotel", "fifth-avenue 10", "New York", false, 400, "JohnyReservation", 0);
+        private Hotel ValbyHotel = new Hotel("ValbyHotel", "Valbylanggade 5", "Copenhagen", true, 100, "Hotels.com", 0);
+        private Hotel WakeUpCopenhagen = new Hotel("Wakeup Copenhagen", "Carsten Nieburhs Gade 11", "Copenhagen", true, 500, "Hotels.com", 0);
+        private Hotel BlueSea = new Hotel("Blue Sea", "Dragonara Road St. Julian's", "Malta", true, 300, "Momondo.dk" ,0);
+        private Hotel MarinaHotel = new Hotel("Marina Hotel", "St. Georges Bay St. Julian's", "malta", false, 1000, "NyhavnTravel" ,0);
+        private Hotel AmediaHotel = new Hotel("Amedia Hotel", "Kurfüerstendamm 203", "Berlin", true, 500, "Momondo.dk",0);
+        private Hotel[] hotelList = {DreamDownTown,CasaHotel,ValbyHotel,WakeUpCopenhagen,BlueSea,MarinaHotel,AmediaHotel};  
+        private ArrayList<Hotel> bookingList = new ArrayList<Hotel>(); //tempbooking list
         
-        String[] arrivalDateArray;
-        String[] depDateArray;
-        ArrayList<Hotel> bookedHotels;
-        BankDataPreparer bank = new BankDataPreparer();
-        
+        private String[] arrivalDateArray;
+        private String[] depDateArray;
+        private ArrayList<Hotel> bookedHotels;
+        private Bank bank = new Bank();
         
     private int getDaysInMonth(String startDate){
         arrivalDateArray = startDate.split(startDate);
@@ -70,16 +65,9 @@ public class HotelReservation {
      */
     @WebMethod(operationName = "getHotel")
     public ArrayList<Hotel> getHotel(@WebParam(name = "city") String city, @WebParam(name = "arrivalDate") String arrivalDate, @WebParam(name = "depDate") String depDate) {
-        hotelList.add(DreamDownTown);
-        hotelList.add(CasaHotel);
-        hotelList.add(ValbyHotel);
-        hotelList.add(WakeUpCopenhagen);
-        hotelList.add(BlueSea);
-        hotelList.add(MarinaHotel);
-        hotelList.add(AmediaHotel);
-        int j = 0;
+        int j = 1;
         for (Hotel hotel : hotelList){
-            if(city == hotel.getCity()){
+            if(city.equalsIgnoreCase(hotel.getCity())){
             Hotel temp = hotel;
             temp.setPrice(hotel.getPrice() * getLengthOfStay(arrivalDate, depDate));
             temp.setBookingNo(j);
@@ -99,7 +87,7 @@ public class HotelReservation {
        for (Hotel hotel : bookingList){
            if (hotelBookingNumber == hotel.getBookingNo()){
                try {
-                   if (validateCreditCard(1,bank.getCreditCardInfo(cardHolder,cardNumber,cardExpireMonth,cardExpireYear),hotel.getPrice())){           
+                   if (bank.getCreditCardValidation(cardHolder, cardNumber, cardExpireMonth, cardExpireYear, hotel.getPrice())){           
                        bookedHotels.add(hotel);
                        return true;
                    }
@@ -139,12 +127,4 @@ public class HotelReservation {
         }
         throw new Exception("Invallid booking number");
     }
-
-    private boolean validateCreditCard(int group, dk.dtu.imm.fastmoney.types.CreditCardInfoType creditCardInfo, int amount) throws CreditCardFaultMessage {
-        dk.dtu.imm.fastmoney.BankPortType port = service.getBankPort();
-        return port.validateCreditCard(group, creditCardInfo, amount);
-    }
-
-
-    
 }
