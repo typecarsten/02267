@@ -4,10 +4,14 @@
  */
 package Hotel;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author Carsten
  */
+
+@XmlRootElement
 public class Hotel {
     private String name = null;
     private String address = null;
