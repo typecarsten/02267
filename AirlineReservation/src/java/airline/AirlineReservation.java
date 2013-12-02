@@ -36,7 +36,7 @@ public class AirlineReservation {
      * Web service operation
      */
     @WebMethod(operationName = "getFlights")
-    public List<FlightInformation> getFlights(@WebParam(name = "flightStart") String flightStart, @WebParam(name = "flightDest") String flightDest, @WebParam(name = "flightDate") String flightDate) throws Exception {
+    public ArrayList<FlightInformation> getFlights(@WebParam(name = "flightStart") String flightStart, @WebParam(name = "flightDest") String flightDest, @WebParam(name = "flightDate") String flightDate) throws Exception {
         flightList.clear();
         bookingList.clear();
         flightList.add(FI1);

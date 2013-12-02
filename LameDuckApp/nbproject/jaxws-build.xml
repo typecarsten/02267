@@ -18,8 +18,8 @@
     </target>
     <target name="wsimport-client-AirlineReservation" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/AirlineReservation"/>
-        <property name="wsdl-AirlineReservation" location="xml-resources/web-service-references/AirlineReservation/wsdl/localhost_8080/AirlineReservation/AirlineReservation.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/AirlineReservation" destdir="${build.generated.dir}/jax-wsCache/AirlineReservation" wsdl="${wsdl-AirlineReservation}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="http://localhost:8080/AirlineReservation/AirlineReservation?wsdl" xnocompile="true" xendorsed="true">
+        <property name="wsdl-AirlineReservation" location="xml-resources/web-service-references/AirlineReservation/wsdl/localhost_8080/LameDuck/AirlineReservation.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/AirlineReservation" destdir="${build.generated.dir}/jax-wsCache/AirlineReservation" wsdl="${wsdl-AirlineReservation}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="http://localhost:8080/LameDuck/AirlineReservation?wsdl" xnocompile="true" xendorsed="true">
             <depends file="${wsdl-AirlineReservation}"/>
             <produces dir="${build.generated.dir}/jax-wsCache/AirlineReservation"/>
         </wsimport>
