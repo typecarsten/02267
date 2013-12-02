@@ -121,6 +121,9 @@
     <message name="TravelGoodOperationRequest">
         <part name="start" type="xsd:boolean"/>
     </message>
+    <message name="TravelGoodOperationResponse">
+        <part name="ok" type="xsd:boolean"/>
+    </message>
     <portType name="TravelGoodOperations">
         <operation name="GetFlights">
             <input name="getFlightInput1" message="tns:GetFlightOperationRequest"/>
@@ -152,6 +155,7 @@
         </operation>
         <operation name="Initiate">
             <input name="input1" message="tns:TravelGoodOperationRequest"/>
+            <output name="output1" message="tns:TravelGoodOperationResponse"/>
         </operation>
     </portType>
     <binding name="TravelGoodBinding" type="tns:TravelGoodOperations">
