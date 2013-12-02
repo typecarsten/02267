@@ -22,30 +22,35 @@ import javax.jws.WebService;
 public class AirlineReservation {  
     
     FlightInformation FI1 = new FlightInformation(1, 500, "Momondo", new Flight("Copenhagen", "Paris", "01;01;10;30" , "01;01;12;30", "SAS"));
-    FlightInformation FI2 = new FlightInformation(2, 650, "Momondo", new Flight("Billund", "Berlin", "02;04;8;10" , "02;04;10;30", "Ryan Air"));
+    FlightInformation FI2 = new FlightInformation(2, 650, "Momondo", new Flight("Billund", "Berlin", "02;04;08;10" , "02;04;10;30", "Ryan Air"));
     FlightInformation FI3 = new FlightInformation(3, 700, "Momondo", new Flight("Aalborg", "New York", "05;01;14;00" , "05;01;23;30", "SAS"));
-    FlightInformation FI4 = new FlightInformation(4, 400, "Momondo", new Flight("Roskilde", "New Delhi", "05;02;9;00" , "05;02;17;45", "Ryan Air"));
+    FlightInformation FI4 = new FlightInformation(4, 400, "Momondo", new Flight("Roskilde", "New Delhi", "05;02;09;00" , "05;02;17;45", "Ryan Air"));
     FlightInformation FI5 = new FlightInformation(5, 450, "Momondo", new Flight("Copenhagen", "Paris", "01;13;12;00" , "01;13;15;00", "SAS"));
-    
+    FlightInformation FI6 = new FlightInformation(5, 500, "Momondo", new Flight("Billund", "Berlin" , "02;04;8;10", "02;04;16;30", "SAS"));
     ArrayList<FlightInformation> flightList = new ArrayList<FlightInformation>();   
     Bank bank = new Bank();
     int amount = 0;
     ArrayList<FlightInformation> bookedFlights = new ArrayList<FlightInformation>();
+    ArrayList<FlightInformation> bookingList = new ArrayList<FlightInformation>();
     /**
      * Web service operation
      */
     @WebMethod(operationName = "getFlights")
-    public List<FlightInformation> getFlights(@WebParam(name = "flightStart") String flightStart, @WebParam(name = "flightDest") String flightDest, @WebParam(name = "flightDate") String flightDate) {
+    public List<FlightInformation> getFlights(@WebParam(name = "flightStart") String flightStart, @WebParam(name = "flightDest") String flightDest, @WebParam(name = "flightDate") String flightDate) throws Exception {
+        flightList.clear();
+        bookingList.clear();
         flightList.add(FI1);
         flightList.add(FI2);
         flightList.add(FI3);
         flightList.add(FI4);
         flightList.add(FI5);
-        ArrayList<FlightInformation> bookingList = new ArrayList<FlightInformation>();
+        flightList.add(FI6);
         for(FlightInformation flightInformation : flightList){
             if(flightInformation.getFlight().getFlightStart().equals(flightStart)){
                 if(flightInformation.getFlight().getFlightDest().equals(flightDest)){
-                    bookingList.add(flightInformation);
+                    if(flightInformation.getFlight().getDeparture().equals(flightDate)){
+                        bookingList.add(flightInformation);
+                    }
                 }
             }
         }

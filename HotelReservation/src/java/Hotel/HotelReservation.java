@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * @author Administrator
  */
-@WebService(serviceName = "HotelReservation")
+@javax.jws.WebService
 public class HotelReservation {
     
         private Hotel DreamDownTown = new Hotel("Dream Downtown", "Wallstreet 25", "New York", true, 200, "FleggaardReservation", 0);
@@ -25,7 +25,7 @@ public class HotelReservation {
         private Hotel BlueSea = new Hotel("Blue Sea", "Dragonara Road St. Julian's", "Malta", true, 300, "Momondo.dk" ,0);
         private Hotel MarinaHotel = new Hotel("Marina Hotel", "St. Georges Bay St. Julian's", "malta", false, 1000, "NyhavnTravel" ,0);
         private Hotel AmediaHotel = new Hotel("Amedia Hotel", "Kurfüerstendamm 203", "Berlin", true, 500, "Momondo.dk",0);
-                ArrayList<Hotel> hotelList = new ArrayList<Hotel>();   
+        private ArrayList<Hotel> hotelList = new ArrayList<Hotel>();   
         private ArrayList<Hotel> bookingList = new ArrayList<Hotel>(); //tempbooking list
         
         private String[] arrivalDateArray;
@@ -65,6 +65,8 @@ public class HotelReservation {
      */
     @WebMethod(operationName = "getHotel")
     public ArrayList<Hotel> getHotel(@WebParam(name = "city") String city, @WebParam(name = "arrivalDate") String arrivalDate, @WebParam(name = "depDate") String depDate) {
+        hotelList.clear();
+        bookingList.clear();
         hotelList.add(DreamDownTown);
         hotelList.add(CasaHotel);
         hotelList.add(ValbyHotel);
@@ -72,14 +74,15 @@ public class HotelReservation {
         hotelList.add(BlueSea);
         hotelList.add(MarinaHotel);
         hotelList.add(AmediaHotel);
-        int j = 1;
+        int j = 0;
+        ArrayList<Hotel> bookingList = new ArrayList<Hotel>();
         for (Hotel hotel : hotelList){
             if(city.equalsIgnoreCase(hotel.getCity())){
             Hotel temp = hotel;
             temp.setPrice(hotel.getPrice() * getLengthOfStay(arrivalDate, depDate));
             temp.setBookingNo(j);
-            j++;
             bookingList.add(temp);
+            j++;
             }
             
         }
