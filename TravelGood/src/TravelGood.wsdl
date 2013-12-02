@@ -121,6 +121,9 @@
     <message name="TravelGoodOperationRequest">
         <part name="start" type="xsd:boolean"/>
     </message>
+    <message name="TravelGoodOperationResponse">
+        <part name="IsItDone" type="xsd:boolean"/>
+    </message>
     <portType name="TravelGoodOperations">
         <operation name="GetFlights">
             <input name="getFlightInput1" message="tns:GetFlightOperationRequest"/>
@@ -152,10 +155,112 @@
         </operation>
         <operation name="Initiate">
             <input name="input1" message="tns:TravelGoodOperationRequest"/>
+            <output name="output1" message="tns:TravelGoodOperationResponse"/>
         </operation>
     </portType>
     <binding name="TravelGoodBinding" type="tns:TravelGoodOperations">
         <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="GetFlights">
+             <soap:operation/>
+            <input name="getFlightInput1">
+                <soap:body use="literal"
+                namespace="http://travelgood.ws" />
+            </input>
+            <output name="getFlightOutput1">
+                <soap:body use="literal"
+                namespace="http://travelgood.ws" />
+            </output>
+        </operation>
+        <operation name="CancelFlight">
+             <soap:operation/>
+            <input name="cancelFlightInput5">
+                <soap:body use="literal"
+                namespace="http://travelgood.ws" />
+            </input>
+            <output name="cancelFlightOutput5">
+                <soap:body use="literal"
+                namespace="http://travelgood.ws" />
+            </output>
+            <fault name="cancelFlightFault1">
+                <soap:fault 
+                name="cancelFlightFault1" 
+                use="literal"
+                namespace="http://travelgood.ws" />
+            </fault>
+        </operation>
+        <operation name="GetHotel">
+             <soap:operation/>
+            <input name="getHotelInput1">
+                <soap:body use="literal"
+                namespace="http://travelgood.ws" />
+            </input>
+            <output name="getHotelOutput1">
+                <soap:body use="literal"
+                namespace="http://travelgood.ws" />
+            </output>
+        </operation>
+        <operation name="CancelHotel">
+             <soap:operation/>
+            <input name="CancelHotelInput2">
+                <soap:body use="literal"
+                namespace="http://travelgood.ws" />
+            </input>
+            <output name="CancelHotelOutput2">
+                <soap:body use="literal"
+                namespace="http://travelgood.ws" />
+            </output>
+            <fault name="CancelHotelFault1">
+                <soap:fault 
+                name="CancelHotelFault1" 
+                use="literal"
+                namespace="http://travelgood.ws" />
+            </fault>
+        </operation>
+        <operation name="BookHotel">
+             <soap:operation/>
+            <input name="bookHotelInput3">
+                <soap:body use="literal"
+                namespace="http://travelgood.ws" />
+            </input>
+            <output name="bookHotelOutput3">
+                <soap:body use="literal"
+                namespace="http://travelgood.ws" />
+            </output>
+            <fault name="bookHotelFault1">
+                <soap:fault 
+                name="bookHotelFault1" 
+                use="literal"
+                namespace="http://travelgood.ws" />
+            </fault>
+        </operation>
+        <operation name="BookFlight">
+             <soap:operation/>
+            <input name="bookFlightInput4">
+                <soap:body use="literal"
+                namespace="http://travelgood.ws" />
+            </input>
+            <output name="bookFlightOutput4">
+                <soap:body use="literal"
+                namespace="http://travelgood.ws" />
+            </output>
+            <fault name="bookFlightFault1">
+                <soap:fault
+                name= "bookFlightFault1"
+                use="literal"
+                namespace="http://travelgood.ws" />
+            </fault>
+        </operation>
+        <operation name="Initiate">
+             <soap:operation/>
+            <input name="input1">
+                <soap:body use="literal"
+                namespace="http://travelgood.ws" />
+            </input>
+            <output name="output1">
+                <soap:body use="literal"
+                namespace="http://travelgood.ws" />
+            </output>
+        </operation>
     </binding>
     <service name="TravelGoodService">
         <port name="TravelGoodPort" binding="tns:TravelGoodBinding">
